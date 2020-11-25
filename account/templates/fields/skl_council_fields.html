@@ -1,0 +1,55 @@
+{% if page == 'create' %}
+<div class="row form-group">
+  <div class="col-xs-6 pad"> 
+    <label for="id_skl_council_cat">Sub category</label>
+    <div class="error_msg" id="sub_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_skl_council_cat" name="Skl_council_cat" multiple data-selected-text-format="count>1">  
+      {% for skl_council_cat in skl_council_cats %}   
+        <option value="{{skl_council_cat.name}}">{{skl_council_cat.name}}</option>  
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-xs-6 pad"> 
+    <label for="id_school">School</label>
+    <div class="error_msg" id="skl_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_school" name="Skl" multiple data-selected-text-format="count>1">   
+      {% for school in schools %}   
+        <option value="{{school.name}}">{{school.name}}</option>  
+      {% endfor %}       
+    </select>
+  </div>
+</div>
+{% else %}
+<div class="row form-group">
+  <div class="col-xs-6v"> 
+    <label for="id_skl_council_cat">Sub category</label>
+    <div class="error_msg" id="sub_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_skl_council_cat" name="Skl_council_cat">
+      {% if profile %}
+      <option value="{{user.school_council}}">{{user.school_council}}</option>  
+      {% else %}
+      <option value=""></option> 
+      {% endif %}   
+      {% for skl_council_cat in skl_council_cats %}   
+        <option value="{{skl_council_cat.name}}">{{skl_council_cat.name}}</option>  
+      {% endfor %} 
+      <option>name</option>   
+      <option>_name</option>  
+    </select>
+  </div>
+  <div class="col-xs-6 pad"> 
+    <label for="id_school">School</label>
+    <div class="error_msg" id="skl_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_school" name="Skl">
+      {% if profile %}
+      <option value="{{user.school}}">{{user.school}}</option>  
+      {% else %}
+      <option value=""></option>
+      {% endif %}    
+      {% for school in schools %}   
+        <option value="{{school.name}}">{{school.name}}</option>  
+      {% endfor %}       
+    </select>
+  </div>
+</div>
+{% endif %}

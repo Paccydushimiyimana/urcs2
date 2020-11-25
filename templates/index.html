@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+  Home
+{% endblock %}
+{% block stylesheet %}
+  <style>
+   p {
+    font-size: 13px !important;
+    margin:unset !important;
+  }
+  </style>
+{% endblock %}
+{% block active_home %}
+<a class="active" href="{% url 'home' %}">
+{% endblock %}
+
+{% block body %}
+  <div style="opacity: 0.9;margin-top:-50px;">
+    <div class="row jumbotron" style="padding: 20px;background-color: black;color: snow;">
+      
+      <h4><b>WELCOME TO URCS.</b></h4>
+      <hr>
+        <h4>
+        The online communication platform for the University of Rwanda,
+        where you find all feeds and information released by the
+         University boaard,council,staff and other authorized personel 
+        </h4>
+        <br>
+        <i>
+        For more announcements related to your specific category,
+        click here or use the 'announces' tab on the left panel.  
+        </i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 col-sm-1"></div>
+    <div class="col-md-8 col-sm-10">
+      <div class="slideshow-container">
+        {% for announce in announces %}
+          <div class="mySlides">
+            <div class="col" style="opacity: 0.8;color: black;">
+              <div class="product-panel-2">
+                {% if user.is_authenticated %}
+                  {% if user not in announce.viewed_by.all %}
+                  <div class="badge btn-theme04 pull-left">New</div>
+                  {% endif %}
+                {% else %}
+                <div class="badge btn-theme04 pull-left">New</div>
+                {% endif %}
+                <br>
+                <h4><u>{{announce.title|truncatechars:45}}</u></h4>
+                <br>
+                <div class="row" style="height: 130px;">
+                  <div class="col-md-8 col-xs-7">
+                    <div style="padding: 0 20px 20px 20px;">
+                      <span class="pull-left">{{announce.content|safe|truncatechars:100}}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xs-5">
+                    <span class="pull-left"><b>{{announce.sender}}/{{announce.sender.category|truncatechars:10}}</b></span>
+                    <br>
+                    <i class="fa pull-left">{{announce.date|date:'F d, Y'}}</i>
+                    <hr>
+                    <a class="modal_view btn btn-sm btn-theme pull-left" data-toggle="modal" data-target="#modal_id"
+                    data-url="{% url 'view_general' announce.pk %}">Open</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+      </div>
+      <div class="dot-container">
+        {% for announce in announces %}
+          <span class="dot" onclick="currentSlide({{forloop.counter}})"></span>
+        {% endfor %} 
+      </div>
+    </div>  
+    <div class="col-md-2 col-sm-1"></div>  
+  </div>
+
+{% endblock %} 
+
+{% block modals %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_id">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content mymodal"> 
+        
+      </div>
+  </div>
+</div>
+
+  {% include 'modal_login.html' %}
+  {% include 'modal_pwd.html' %}
+{% endblock %} 
+
+{% block script %}
+<script>
+  var slideIndex = 0;
+  showSlides(slideIndex);
+
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+  
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
+  
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}    
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+  }
+
+  $(document).ready(function autoslide() {
+    plusSlides(1);
+    setTimeout(autoslide,5000)
+  })
+ 
+</script>
+<script>
+  $('.modal_view').click(function(){
+    console.log('click')
+    $.ajax({
+      url:$(this).data('url'),
+      success:function(self){
+        $('.mymodal').html(self)
+        console.log(self)
+      }
+    })
+  })
+</script>
+<script>
+  $('.showhide').click(function(){
+      if($('#id_password').attr('type') =='password'){
+          $('#id_password').attr('type','text')
+          $('.showhide').addClass('fa-eye-slash')
+      }
+      else{
+          $('#id_password').attr('type','password')
+          $('.showhide').removeClass('fa-eye-slash')
+      }
+  })
+</script>
+{% endblock %}

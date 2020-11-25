@@ -1,0 +1,111 @@
+{% if page == 'create' %}
+<div class="row form-group">
+  <div class="col-xs-3"></div> 
+  <div class="col-xs-6 pad"> 
+    <label for="id_student_cat">Sub_category</label>
+    <div class="error_msg" id="sub_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_student_cat" name="Std_cat" multiple data-selected-text-format="count>1" data-selected-text-format="count>1">
+      {% for student_cat in student_cats %}   
+      <option value="{{student_cat.name}}">{{student_cat.name}}</option>  
+      {% endfor %} 
+    </select>
+  </div>
+  <div class="col-xs-3"></div> 
+</div>
+<div class="row form-group">
+  <div class="col-xs-4 pad">
+    <label for="id_school">School</label>
+    <div class="error_msg" id="skl_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_school" name="Skl" multiple data-selected-text-format="count>1"> 
+      {% for school in schools%}   
+      <option value="{{school.name}}">{{school.name}}</option>  
+      {% endfor %}       
+    </select>
+  </div>
+  <div class="col-xs-4 pad">
+    <div class="error_msg" id="depart_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <label>Department</label>
+    <div  id="department">
+      <select class="my_select form-control" id="id_department" name="Depart" multiple data-selected-text-format="count>1">
+        <option value=""></option>     
+      </select>
+    </div>
+  </div>
+  <div class="col-xs-4 pad">
+    <label for="id_level">Level</label>
+    <div class="error_msg" id="lev_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <div id="level">
+      <select class="my_select form-control " id="id_level" name="Lv" multiple data-selected-text-format="count>1">
+        <option value=""></option>  
+      </select>
+    </div> 
+  </div>
+</div>
+{% else %}
+<div class="row form-group">
+  <div class="col-xs-6 pad">
+    <label for="">Reg No</label>
+      {% if profile %}
+      <input class="form-control" type="text" name="Reg" maxlength="9" placeholder="{{user.regNo}}">
+      {% else %}
+      <input class="form-control" type="text" name="Reg" maxlength="9">
+      {% endif %}
+  </div> 
+  <div class="col-xs-6 pad"> 
+    <label for="id_student_cat">Sub_category</label>
+    <div class="error_msg" id="sub_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="my_select form-control" id="id_student_cat" name="Std_cat">
+      {% if profile %}
+      <option value="{{user.student}}">{{user.student}}</option>  
+      {% else %}
+      <option value="">------------</option>  
+      {% endif %}
+      {% for student_cat in student_cats %}   
+      <option value="{{student_cat.name}}">{{student_cat.name}}</option>  
+      {% endfor %} 
+    </select>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-xs-4 pad">
+    <label for="id_school">School</label>
+    <div class="error_msg" id="skl_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="my_select form-control" id="id_school" name="Skl">
+      {% if profile %}
+      <option value="{{user.school}}">{{user.school}}</option>  
+      {% else %}
+      <option value=""></option>
+      {% endif %}  
+      {% for school in schools%}   
+      <option value="{{school.name}}">{{school.name}}</option>  
+      {% endfor %}       
+    </select>
+  </div>
+  <div class="col-xs-4 pad">
+    <label>Department</label>
+    <div class="error_msg" id="depart_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <div id="department">
+      <select class="my_select form-control" id="id_department" name="Depart">
+        {% if profile %}
+        <option value="{{user.department}}">{{user.department}}</option>  
+        {% else %}
+        <option value=""></option> 
+        {% endif %}     
+      </select>
+    </div>
+  </div>
+  <div class="col-xs-4 pad">
+    <label for="id_level">Level</label>
+    <div class="error_msg" id="lev_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <div id="level">
+      <select class="my_select form-control" id="id_level" name="Lv">
+        {% if profile %}
+        <option value="{{user.level}}">{{user.level}}</option>  
+        {% else %}
+        <option value=""></option>  
+        {% endif %}    
+      </select>
+    </div>
+  </div>
+</div>
+{% endif %}         

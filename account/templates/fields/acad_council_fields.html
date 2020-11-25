@@ -1,0 +1,34 @@
+{% if page == 'create' %}
+<div class="row form-group">
+  <div class="col-xs-3"></div>
+  <div class="col-xs-6 pad">
+    <label for="id_acad_council_cat">Sub category</label>
+    <div class="error_msg" id="sub_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_acad_council_cat" name="Acad_council_cat" multiple data-selected-text-format="count>1">
+      {% for acad_council_cat in acad_council_cats %}   
+        <option value="{{acad_council_cat.name}}">{{acad_council_cat.name}}</option>  
+      {% endfor %} 
+    </select>
+  </div>
+  <div class="col-xs-3"></div>
+</div>
+{% else %}
+<div class="row form-group">
+  <div class="col-xs-3"></div>
+  <div class="col-xs-6 pad">
+    <label for="id_acad_council_cat">Sub category</label>
+    <div class="error_msg" id="sub_msg"><b><i class="fa fa-exclamation-circle"></i> </b></div>
+    <select class="form-control my_select" id="id_acad_council_cat" name="Acad_council_cat">
+      {% if profile %}
+      <option value="{{user.academic_council}}">{{user.academic_council}}</option>  
+      {% else %}
+      <option value=""></option> 
+      {% endif %}  
+      {% for acad_council_cat in acad_council_cats %}   
+        <option value="{{acad_council_cat.name}}">{{acad_council_cat.name}}</option>  
+      {% endfor %} 
+    </select>
+  </div>
+  <div class="col-xs-3"></div>
+</div>
+{% endif %}
